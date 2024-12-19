@@ -1,0 +1,573 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+
+\title{Homework 3}
+\author{2023-11398 Yun sukmin}
+
+\begin{document}
+\maketitle
+\section{Linear Regression}
+\subsection{Problem - (a)}
+\[
+\begin{aligned}
+    \min_{w} \frac{1}{2} \sum_{n=1}^{N} (y_{n} - w^{T}\bar{x}_{n})^{2} &= \min_{w} \frac{1}{2} \sum_{n=1}^{N} (w^{T}\bar{x}_{n} - y_{n})^{2} \\
+    \nabla_{w} E(w) &= \sum_{n=1}^{N} (w^{T}\bar{x}_{n} - y_{n})\bar{x}_{n} \\
+    &= \sum_{n=1}^{N} (w^{T}\bar{x}_{n})\bar{x}_{n} - \sum_{n=1}^{N} (y_{n})\bar{x}_{n} \\
+    &= \sum_{n=1}^{N} \bar{x}_{n}\bar{x}_{n}^{T}w - \sum_{n=1}^{N} y_{n}\bar{x}_{n} \\
+    &= \left(\sum_{n=1}^{N} \bar{x}_{n}\bar{x}_{n}^{T}\right)w - \left(\sum_{n=1}^{N} y_{n}\bar{x}_{n}\right) \\
+    &= Aw - b = 0 \\
+    &A=\sum_{n=1}^{N} \bar{x}_{n}\bar{x}_{n}^{T}, \ b=\sum_{n=1}^{N} t_{n}\bar{x}_{n} \\
+\end{aligned}
+\]
+Thus: \\
+\[
+    A=X^{T}X,  b=X^{T}y \\
+\]
+where \( X \) is the matrix with rows \( \bar{x}_{n}^{T} \), and \( T \) is the vector of target values \( t_{n} \). This linear system can now be solved to obtain \( w \) as:
+\[
+    w = A^{-1}b = (X^{T}X)^{-1}X^{T}
+\]
+
+
+
+\subsection{Problem - (b)}
+Let's define the training data matrix X and vector T as follows:
+\[
+X=\begin{bmatrix}
+    1 & 0 \\
+    1 & \epsilon \\
+\end{bmatrix}
+\hspace{1em}
+T=\begin{bmatrix}
+    1 \\
+    1 \\
+\end{bmatrix}
+\]
+Using the expression derived in (a), we have:
+\[
+A = X^{T}X=\begin{bmatrix}
+    1 & 1 \\
+    0 & \epsilon \\
+\end{bmatrix}
+\begin{bmatrix}
+    1 & 0 \\
+    1 & \epsilon \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 & \epsilon \\
+    \epsilon & \epsilon^{2} \\
+\end{bmatrix}
+\hspace{1em}
+b = X^{T}T=
+\begin{bmatrix}
+    1 & 1\\
+    0 & \epsilon \\
+\end{bmatrix}
+\begin{bmatrix}
+    1 \\
+    1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 \\
+    \epsilon \\
+\end{bmatrix}
+\]
+
+Now, the equation Aw = b becomes:
+\[
+\begin{bmatrix}
+    2 & \epsilon \\
+    \epsilon & \epsilon^{2} \\
+\end{bmatrix}
+\begin{bmatrix}
+    w_{0} \\
+    w_{1} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 \\
+    \epsilon \\
+\end{bmatrix}
+\]
+two equations:
+\[
+    2w_{0} + \epsilon w_{1} = 2
+\]
+\[
+    \epsilon w_{0} + \epsilon^{2} w_{1} = \epsilon
+\]
+Dividing the second equation by $\epsilon (\epsilon \neq 0)$, we get:
+\[
+    w_{0} + \epsilon w_{1} = 1
+\]
+Subtracting the above equation from the first equation, we get:
+\[
+    w_{0} = 1
+\]
+we can substitute $w_{0}$ into the first equation:
+\[
+    2 + \epsilon w_{1} = 2
+\]
+\[
+    w_{1} = 0
+\]
+Thus, the solution to the linear regression problem is:
+\[
+    w = \begin{bmatrix}
+        1 \\
+        0 \\
+    \end{bmatrix}
+\]
+
+
+
+\subsection{Problem - (c)}
+Let's define the training data matrix X and vector T as follows:
+\[
+X=\begin{bmatrix}
+    1 & 0 \\
+    1 & \epsilon \\
+\end{bmatrix}
+\hspace{1em}
+T=\begin{bmatrix}
+    1 + \epsilon \\
+    1 \\
+\end{bmatrix}
+\]
+Using the expression derived in (a), we have:
+\[
+A = X^{T}X=\begin{bmatrix}
+    1 & 1 \\
+    0 & \epsilon \\
+\end{bmatrix}
+\begin{bmatrix}
+    1 & 0 \\
+    1 & \epsilon \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 & \epsilon \\
+    \epsilon & \epsilon^{2} \\
+\end{bmatrix}
+\hspace{1em}
+b = X^{T}T=
+\begin{bmatrix}
+    1 & 1\\
+    0 & \epsilon \\
+\end{bmatrix}
+\begin{bmatrix}
+     1 + \epsilon \\
+    1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 + \epsilon\\
+    \epsilon \\
+\end{bmatrix}
+\]
+
+Now, the equation Aw = b becomes:
+\[
+\begin{bmatrix}
+    2 & \epsilon \\
+    \epsilon & \epsilon^{2} \\
+\end{bmatrix}
+\begin{bmatrix}
+    w_{0} \\
+    w_{1} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 + \epsilon\\
+    \epsilon \\
+\end{bmatrix}
+\]
+two equations:
+\[
+    2w_{0} + \epsilon w_{1} = 2 + \epsilon
+\]
+\[
+    \epsilon w_{0} + \epsilon^{2} w_{1} = \epsilon
+\]
+Dividing the second equation by $\epsilon (\epsilon \neq 0)$, we get:
+\[
+    w_{0} + \epsilon w_{1} = 1
+\]
+Subtracting the above equation from the first equation, we get:
+\[
+    w_{0} = 1 + \epsilon
+\]
+we can substitute $w_{0}$ into the first equation:
+\[
+    2 + 2\epsilon + \epsilon w_{1} = 2 + \epsilon
+\]
+\[
+    w_{1} = -1
+\]
+Thus, the solution to the linear regression problem is, and substitute $\epsilon = 0.1$ to the solution is:
+\[
+    w = \begin{bmatrix}
+        1 + \epsilon \\
+        -1 \\
+    \end{bmatrix}
+    = \begin{bmatrix}
+        1.1 \\
+        -1 \\
+    \end{bmatrix}
+\]
+
+
+
+\subsection{Problem - (d)}
+\[
+w_{b} = \begin{bmatrix}
+    1 \\
+    0 \\ 
+\end{bmatrix}
+\hspace{1em}
+w_{c} = \begin{bmatrix}
+    1.1 \\
+    -1 \\
+\end{bmatrix}
+\]
+So difference between \( w_{b} \) and \( w_{c} \) is:
+\[
+Difference = w_{c} - w_{b} = \begin{bmatrix}
+    1.1\\
+    -1\\
+\end{bmatrix}
+-
+\begin{bmatrix}
+    1\\
+    0\\
+\end{bmatrix}
+=   
+\begin{bmatrix}
+    0.1 \\
+    -1 \\
+\end{bmatrix}
+\]
+
+\section{Linear Regression with Regularization}
+\subsection{Problem - (a)}
+Let's show that A is positive semidefinite matrix. \\
+Defining in Problem 1, Let $A=X^{T}X$ where X is N by D matrix. \\
+we need to show that for any vector $v \in \mathbb{R}^{D}$, $v^{T}Av \geq 0$. \\
+\[
+\begin{aligned}
+    v^{T}Av &= v^{T}X^{T}Xv \\
+    &= (Xv)^{T}Xv \\
+    &= ||Xv||^{2} \geq 0 \\
+\end{aligned}
+\]
+so A is positive semidefinite matrix. \\
+Since that all of eigenvalues of matrix A are non-negative. When add $\lambda I$ to A, all of eigenvalues of matrix A are at least $\lambda$. \\
+\[
+Eigenvalues \hspace{0.5em} of \hspace{0.3em} (A+\lambda I) \geq \lambda
+\]
+Eigenvalues of $(A+\lambda I)^{-1}$ are the reciprocals of the eigenvalues of $A+\lambda I$. \\
+eigenvalues of $A+\lambda I$ are at least $\lambda$, so eigenvalues of $(A+\lambda I)^{-1}$ are at most $\frac{1}{\lambda}$ \\
+so $\sigma((A+\lambda I)^{-1}) \leq \frac{1}{\lambda}$ is right. \\
+
+\subsection{Problem - (b)}
+in Problem 1-(b), training datas are:
+\[
+X=\begin{bmatrix}
+    1 & 0 \\
+    1 & \epsilon \\
+\end{bmatrix}
+\hspace{1em}
+T=\begin{bmatrix}
+    1 \\
+    1 \\
+\end{bmatrix}
+\]
+Constructing A and b as in Problem 1-(b), we have:
+\[
+A = X^{T}X=\begin{bmatrix}
+    1 & 1 \\
+    0 & \epsilon \\
+\end{bmatrix}
+\begin{bmatrix}
+    1 & 0 \\
+    1 & \epsilon \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 & \epsilon \\
+    \epsilon & \epsilon^{2} \\
+\end{bmatrix}
+\hspace{1em}
+b = X^{T}T=
+\begin{bmatrix}
+    1 & 1\\
+    0 & \epsilon \\
+\end{bmatrix}
+\begin{bmatrix}
+    1 \\
+    1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 \\
+    \epsilon \\
+\end{bmatrix}
+\]
+Now, the equation $(A+\lambda I)w = b$ becomes:
+\[
+\begin{bmatrix}
+    2+\lambda & \epsilon \\
+    \epsilon & \epsilon^{2}+\lambda \\
+\end{bmatrix}
+\begin{bmatrix}
+    w_{0} \\
+    w_{1} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 \\
+    \epsilon \\
+\end{bmatrix}
+\]
+two equations:
+\[
+    (2+\lambda)w_{0} + \epsilon w_{1} = 2
+\]
+\[
+    \epsilon w_{0} + (\epsilon^{2}+\lambda) w_{1} = \epsilon
+\]
+Substituting $\epsilon = 0.1, \lambda = 0.05$ into two equations:
+\[
+    2.05w_{0} + 0.1w_{1} = 2
+\]
+\[
+    0.1w_{0} + 0.06w_{1} = 0.1
+\]
+Simplify two equations:
+\[
+    123w_{0} + 6w_{1} = 120
+\]
+\[
+    10w_{0} + 6w_{1} = 10
+\]
+Subtracting the second equation from the first equation:
+\[
+    113w_{0} = 110
+    \hspace{1em}
+    w_{0} = \frac{110}{113}
+\]
+And substituting $w_{0}$ in upper equaions, we gets:
+\[
+    w_{1}=\frac{5}{113}
+\]
+So, vector w is:
+\[
+    w = \frac{5}{113}
+    \begin{bmatrix}
+        22 \\
+        1 \\
+    \end{bmatrix}
+\]
+\\
+in Problem 1-(c), training datas are:
+\[
+X=\begin{bmatrix}
+    1 & 0 \\
+    1 & \epsilon \\
+\end{bmatrix}
+\hspace{1em}
+T=\begin{bmatrix}
+    1 + \epsilon \\
+    1 \\
+\end{bmatrix}
+\]
+Constructing A and b as in Problem 1-(b), we have:
+\[
+A = X^{T}X=\begin{bmatrix}
+    1 & 1 \\
+    0 & \epsilon \\
+\end{bmatrix}
+\begin{bmatrix}
+    1 & 0 \\
+    1 & \epsilon \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 & \epsilon \\
+    \epsilon & \epsilon^{2} \\
+\end{bmatrix}
+\hspace{1em}
+b = X^{T}T=
+\begin{bmatrix}
+    1 & 1\\
+    0 & \epsilon \\
+\end{bmatrix}
+\begin{bmatrix}
+    1 + \epsilon\\
+    1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 + \epsilon\\
+    \epsilon \\
+\end{bmatrix}
+\]
+Now, the equation $(A+\lambda I)w = b$ becomes:
+\[
+\begin{bmatrix}
+    2+\lambda & \epsilon \\
+    \epsilon & \epsilon^{2}+\lambda \\
+\end{bmatrix}
+\begin{bmatrix}
+    w_{0} \\
+    w_{1} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    2 + \epsilon \\
+    \epsilon \\
+\end{bmatrix}
+\]
+two equations:
+\[
+    (2+\lambda)w_{0} + \epsilon w_{1} = 2 + \epsilon
+\]
+\[
+    \epsilon w_{0} + (\epsilon^{2}+\lambda) w_{1} = \epsilon
+\]
+Substituting $\epsilon = 0.1, \lambda = 0.05$ into two equations:
+\[
+    2.05w_{0} + 0.1w_{1} = 2.1
+\]
+\[
+    0.1w_{0} + 0.06w_{1} = 0.1
+\]
+Simplify two equations:
+\[
+    123w_{0} + 6w_{1} = 126
+\]
+\[
+    10w_{0} + 6w_{1} = 10
+\]
+Subtracting the second equation from the first equation:
+\[
+    113w_{0} = 116
+    \hspace{1em}
+    w_{0} = \frac{116}{113}
+\]
+And substituting $w_{0}$ in upper equaions, we gets:
+\[
+    w_{1}=\frac{-5}{113}
+\]
+So, vector w is:
+\[
+    w = \frac{1}{113}
+    \begin{bmatrix}
+        116 \\
+        -5 \\
+    \end{bmatrix}
+\]
+Difference in between upper two setups is:
+\[
+    w_{c} - w_{b} = \frac{1}{113}
+    \begin{bmatrix}
+        116 \\
+        -5 \\
+    \end{bmatrix}
+    -
+    \frac{5}{113}
+    \begin{bmatrix}
+        22 \\
+        1 \\
+    \end{bmatrix}
+    =
+    \frac{1}{113}
+    \begin{bmatrix}
+        116 - 110\\
+        -5 -5\\
+    \end{bmatrix}
+    =
+    \frac{1}{113}
+    \begin{bmatrix}
+        6 \\
+        -10 \\
+    \end{bmatrix}
+\]
+
+\subsection{Problem - (c)}
+Difference in Problem 1-(d) is $\begin{bmatrix}
+    0.1 \\
+    -1\\
+\end{bmatrix}$, and difference in Problem 2-(c) is $\frac{1}{113}\begin{bmatrix}
+    6 \\
+    -10\\
+\end{bmatrix}$. \\
+The difference is due to the addition of epsilon to the data. Therefore, the difference indicates how sensitive the model is to the addition of a small noise value, epsilon. \\
+The difference in Problem 1-(d) is larger than the difference in Problem 2-(c). This is because the model in Problem 1-(d) is more sensitive to the addition of a small noise value, epsilon, than the model in Problem 2-(c). \\
+This means that the regularization term $\lambda I$ helps to prevent the model from becoming overly sensitive to small variations or noise in the target values. \\
+So, the regularization term allows the the model to maintain stability and robustness.
+
+\section{LR with Regularization: A Probabilistic Perspective}
+By using Bayes' rule, the posterior probability is proportional to the product of the prior probability and the likelihood: \\
+\[
+    Pr(w|X, y) \propto Pr(y|X, w)Pr(w)
+\]
+Given Pr(w) follows a Gaussian distribution with mean 0 and covariance matrix $\frac{1}{\lambda}I$, the prior probability is: \\    
+\[
+    Pr(w) = N(0, \frac{1}{\lambda}I) = \frac{1}{(\frac{2\pi}{\lambda})^{d/2}}exp(-\frac{\lambda}{2}w^{T}w)
+\]
+where d is dimension of w.
+Given the likelihood $Pr(y|X,w)$ is the probability of the ovsered data given the weights w:
+\[
+    \begin{aligned}
+        Pr(y|X,w) &= N(y|Xw, \sigma^{2}I) \\
+        &= \frac{1}{(2\pi\sigma^{2})^{N/2}}exp(-\frac{1}{2\sigma^{2}}(y-Xw)^{T}(y-Xw)) \\
+        &= \prod_{n=1}^{N} N(y_{n}|w^{T}\bar{x}_{n}, \sigma^{2}) \\
+        &= \frac{1}{(2\pi\sigma^{2})^{N/2}}exp(-\frac{1}{2\sigma^{2}}\sum_{n=1}^{N}(y_{n}-w^{T}\bar{x}_{n})^{2})
+    \end{aligned}
+\]
+For maximizing the posterior probability, we need to maximize the log of the posterior probability:
+\[
+    \begin{aligned}
+        log(Pr(w|X, y)) &\propto log(Pr(y|X, w)Pr(w)) \\
+        &= log(Pr(y|X, w)) + log(Pr(w)) \\
+        &= -\frac{1}{2\sigma^{2}}\sum_{n=1}^{N}(y_{n}-w^{T}\bar{x}_{n})^{2} - \frac{\lambda}{2}w^{T}w + C \\
+        &= -(\frac{1}{2\sigma^{2}}\sum_{n=1}^{N}(y_{n}-w^{T}\bar{x}_{n})^{2} + \frac{\lambda}{2}w^{T}w )
+    \end{aligned}
+\]
+For maximizing the posterior probability, we minimize the objective function of linvear regression with L2 regularization. \\
+So finding the best w by maximizing the posterior probability is equivalent to linear regression with L2 regularization. \\
+
+\section{Logistic Regression}
+\[
+    \begin{aligned}
+    L(w) = -\sum_{n=1}^{N} t_{n}log(\sigma(w^{T}\bar{x}_{n})) + (1-t_{n})log(1-\sigma(w^{T}\bar{x}_{n})) \\    
+    \end{aligned}
+\]
+Differentiating the loss function with respect to w, we get:
+\[
+    \begin{aligned}
+        \frac{\partial}{\partial w} L(w) 
+        &= -\sum_{n=1}^{N} \left(t_{n}\frac{1}{\sigma(w^{T}\bar{x}_{n})}\frac{\partial}{\partial w}\sigma(w^{T}\bar{x}_{n})-(1-t_{n})\frac{1}{1-\sigma(w^{T}\bar{x}_{n})}\frac{\partial}{\partial w}\sigma(w^{T}\bar{x}_{n})\right) \hspace{1em} (chain-rule) \\
+        &= -\sum_{n=1}^{N} \left(t_{n}\frac{1}{\sigma(w^{T}\bar{x}_{n})}-(1-t_{n})\frac{1}{1-\sigma(w^{T}\bar{x}_{n})}\right)\dot{}\frac{\partial}{\partial w}\sigma(w^{T}\bar{x}_{n}) \\
+        &= -\sum_{n=1}^{N} \left(t_{n}\frac{1}{\sigma(w^{T}\bar{x}_{n})}-(1-t_{n})\frac{1}{1-\sigma(w^{T}\bar{x}_{n})}\right)\sigma(w^{T}\bar{x}_{n})(1-\sigma(w^{T}\bar{x}_{n}))\frac{\partial}{\partial w}w^{T}\bar{x}_{n} \hspace{1em} (chain-rule) \\
+        &= -\sum_{n=1}^{N} \left(t_{n}\frac{1}{\sigma(w^{T}\bar{x}_{n})}-(1-t_{n})\frac{1}{1-\sigma(w^{T}\bar{x}_{n})}\right)\sigma(w^{T}\bar{x}_{n})(1-\sigma(w^{T}\bar{x}_{n}))\bar{x}_{n} \\
+        &= -\sum_{n=1}^{N} \left(t_{n}(1-\sigma(w^{T}\bar{x}_{n}))-(1-t_{n})\sigma(w^{T}\bar{x}_{n})\right)\bar{x}_{n} \\
+        &= -\sum_{n=1}^{N} \left(t_{n}-t_{n}\sigma(w^{T}\bar{x}_{n})-\sigma(w^{T}\bar{x}_{n})+t_{n}\sigma(w^{T}\bar{x}_{n})\right)\bar{x}_{n} \\
+        &= -\sum_{n=1}^{N} \left(t_{n}-\sigma(w^{T}\bar{x}_{n})\right)\bar{x}_{n} \\
+    \end{aligned}
+\]
+Thus, the gradient of the loss function is:
+\[
+    \frac{\partial}{\partial w} L(w)  = -\sum_{n=1}^{N} \left(t_{n}-\sigma(w^{T}\bar{x}_{n})\right)\bar{x}_{n}
+\]
+setting the gradient to zero, we can solve for w. \\
+Here, $\sigma(w^{T}\bar{x}_{n}) = \frac{1}{1+exp(-w^{T}\bar{x}_{n})}$, sigmoid function is nonlinear functions on w, this means that we can't isolate w in a closed-form expression, because the sigmoid introduces a dependency on w that is nonlinear and not easily inverted. \\
+
+\end{document}
